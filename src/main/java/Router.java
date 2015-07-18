@@ -1,9 +1,9 @@
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
+
 import static java.util.stream.Collectors.toMap;
 
 /**
@@ -33,7 +33,7 @@ public class Router<T,U> {
         sources = new HashSet<>();
         Map<Set<Sink<T,U>>, Source<T,U>> sourceMap = new HashMap<>();
         for (T p : inputSource) {
-            Set<Sink> destinationSinks = new HashSet<>();
+            Set<Sink<T, U>> destinationSinks = new HashSet<>();
             for (Sink<T,U> vc : inputSinks) {
                 if (routeFilter.test(p, vc.getId())) {
                     destinationSinks.add(vc);
@@ -43,11 +43,11 @@ public class Router<T,U> {
             if (!sourceMap.containsKey(destinationSinks)) {
                 Set<T> sourceSet = new HashSet<>(1);
                 sourceSet.add(p);
-                Source newSource = new Source(sourceSet);
+                Source<T, U> newSource = new Source<T, U>(sourceSet);
                 sources.add(newSource);
                 sourceMap.put(destinationSinks, newSource);
             } else {
-                Source existingSource = sourceMap.get(destinationSinks);
+                Source<T, U> existingSource = sourceMap.get(destinationSinks);
                 existingSource.getItems().add(p);
             }
         }
@@ -56,9 +56,9 @@ public class Router<T,U> {
         pipes = new HashSet<>();
         for (Map.Entry<Set<Sink<T,U>>, Source<T,U>> entry : sourceMap.entrySet()) {
             Set<Sink<T,U>> sinksForThisSource = entry.getKey();
-            Source source = entry.getValue();
-            for (Sink sink : sinksForThisSource) {
-                Pipe pipe = new Pipe(source, sink);
+            Source<T, U> source = entry.getValue();
+            for (Sink<T, U> sink : sinksForThisSource) {
+                Pipe<T, U> pipe = new Pipe<T, U>(source, sink);
                 pipes.add(pipe);
             }
         }
@@ -73,17 +73,17 @@ public class Router<T,U> {
     public Map<U, Set<T>> route() {
 
         //optimize such that the maximum amount of items are routed to sinks
-        MaxFlowOptimizer pr = new MaxFlowOptimizer(sources, pipes, sinks);
+        MaxFlowOptimizer<T, U> pr = new MaxFlowOptimizer<>(sources, pipes, sinks);
         pr.run();
 
         //within the constaints of maximum flow, balance the amounts in each sink as much as possible
-        FlowBalanceOptimizer bal = new FlowBalanceOptimizer(sources);
+        FlowBalanceOptimizer<T, U> bal = new FlowBalanceOptimizer<>(sources);
         bal.run();
         
         //execute the transfer of data from source to sink based on the computed flow amounts on each pipe
-        pipes.forEach(Pipe::transferFlow);
+        pipes.forEach(Pipe<T, U>::transferFlow);
 
         //gather the routing results by sink
-        Map<U, Set<T>> collect = sinks.stream().collect(toMap(k->k.getId(), Sink<T, U>::getItems));
+        return sinks.stream().collect(toMap(Sink::getId, Sink<T, U>::getItems));
     }
 }
