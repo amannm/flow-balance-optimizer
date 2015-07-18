@@ -3,13 +3,13 @@ package com.amannmalik.optimization;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Pipe<T,U> {
+public class Pipe<T, U> {
 
-    private final Source source;
-    private final Sink sink;
+    private final Source<T, U> source;
+    private final Sink<T, U> sink;
     private int flow;
 
-    public Pipe(Source source, Sink sink) {
+    public Pipe(Source<T, U> source, Sink<T, U> sink) {
         this.source = source;
         this.sink = sink;
         this.flow = 0;
@@ -29,9 +29,11 @@ public class Pipe<T,U> {
     public int getSinkFlow() {
         return sink.getFlow();
     }
+
     public int getSinkInitial() {
         return sink.getInitial();
     }
+
     public int getSinkTarget() {
         return sink.getTarget();
     }
@@ -54,6 +56,12 @@ public class Pipe<T,U> {
         }
     }
 
+    public int getAndClearFlow() {
+        int currentFlow = flow;
+        flow = 0;
+        return currentFlow;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,8 +69,7 @@ public class Pipe<T,U> {
 
         Pipe<?, ?> pipe = (Pipe<?, ?>) o;
 
-        if (!source.equals(pipe.source)) return false;
-        return sink.equals(pipe.sink);
+        return source.equals(pipe.source) && sink.equals(pipe.sink);
 
     }
 

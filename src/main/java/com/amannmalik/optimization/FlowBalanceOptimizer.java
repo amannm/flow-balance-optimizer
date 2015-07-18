@@ -39,12 +39,7 @@ public class FlowBalanceOptimizer<T, U> implements Runnable {
         if (!outputs.isEmpty()) {
 
             //remove all flow committed to all pipes from this source
-            int totalOutput = 0;
-            for (Pipe<T, U> o : outputs) {
-                int flow = o.getFlow();
-                totalOutput += flow;
-                o.setFlow(0);
-            }
+            int totalOutput = outputs.stream().mapToInt(Pipe::getAndClearFlow).sum();
 
             //create proxy objects for each pipe from this source
             Map<Bar, Pipe<T, U>> bars = outputs.stream().collect(Collectors.toMap(Bar::new, Function.identity()));

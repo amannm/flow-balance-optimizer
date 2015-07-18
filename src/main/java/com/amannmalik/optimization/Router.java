@@ -74,7 +74,7 @@ public class Router<T, U> {
         MaxFlowOptimizer<T, U> pr = new MaxFlowOptimizer<>(sources, pipes, sinks);
         pr.run();
 
-        //within the constaints of maximum flow, balance the amounts in each sink as much as possible
+        //within the constraints of maximum flow, balance the amounts in each sink as much as possible
         FlowBalanceOptimizer<T, U> bal = new FlowBalanceOptimizer<>(sources);
         bal.run();
 
