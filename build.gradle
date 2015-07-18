@@ -1,0 +1,19 @@
+group "com.amannmalik"
+version "1.0-SNAPSHOT"
+
+wrapper {
+    gradleVersion = "2.5"
+}
+
+apply plugin: "java"
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "junit:junit:4.12"
+}
+
