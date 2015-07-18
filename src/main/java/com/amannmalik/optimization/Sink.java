@@ -1,24 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.amannmalik.optimization;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- *
- * @author amann.malik
- */
-public class Sink<T,U> {
+public class Sink<T, U> {
 
     private final U id;
     private final Set<T> items;
     private final int target;
     private final int initial;
-    private final Set<Pipe<T,U>> inputs;
+    private final Set<Pipe<T, U>> inputs;
 
     public Sink(U id, int initial, int target) {
         this.id = id;
@@ -36,7 +28,7 @@ public class Sink<T,U> {
         return target;
     }
 
-    public Set<Pipe<T,U>> getInputs() {
+    public Set<Pipe<T, U>> getInputs() {
         return inputs;
     }
 

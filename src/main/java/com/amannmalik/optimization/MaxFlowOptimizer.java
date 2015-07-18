@@ -1,19 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.amannmalik.optimization;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- *
- * @author amann.malik
- */
-public class MaxFlowOptimizer<T,U> implements Runnable {
+public class MaxFlowOptimizer<T, U> implements Runnable {
 
     private final int numNodes;
     private final int[][] capacity;
@@ -24,11 +16,11 @@ public class MaxFlowOptimizer<T,U> implements Runnable {
     private final int[] height;
     private final int[] seen;
 
-    private final Set<Pipe<T,U>> pipes;
-    private final Map<Source<T,U>, Integer> sourceMap;
-    private final Map<Sink<T,U>, Integer> sinkMap;
+    private final Set<Pipe<T, U>> pipes;
+    private final Map<Source<T, U>, Integer> sourceMap;
+    private final Map<Sink<T, U>, Integer> sinkMap;
 
-    public MaxFlowOptimizer(Set<Source<T,U>> sources, Set<Pipe<T,U>> pipes, Set<Sink<T,U>> sinks) {
+    public MaxFlowOptimizer(Set<Source<T, U>> sources, Set<Pipe<T, U>> pipes, Set<Sink<T, U>> sinks) {
 
         this.numNodes = sources.size() + sinks.size() + 2;
 
@@ -45,20 +37,20 @@ public class MaxFlowOptimizer<T,U> implements Runnable {
         AtomicInteger nextId = new AtomicInteger(2);
 
         sourceMap = new HashMap<>();
-        for (Source s : sources) {
+        for (Source<T, U> s : sources) {
             int id = nextId.getAndIncrement();
             sourceMap.put(s, id);
             this.capacity[0][id] = s.getAvailable();
         }
 
         sinkMap = new HashMap<>();
-        for (Sink s : sinks) {
+        for (Sink<T, U> s : sinks) {
             int id = nextId.getAndIncrement();
             sinkMap.put(s, id);
             this.capacity[id][1] = Math.max(s.getTarget() - s.getInitial(), 0);
         }
 
-        for (Pipe p : pipes) {
+        for (Pipe<T, U> p : pipes) {
             int pipeSourceIndex = sourceMap.get(p.getSource());
             int pipeSinkIndex = sinkMap.get(p.getSink());
             this.capacity[pipeSourceIndex][pipeSinkIndex] = Integer.MAX_VALUE;
@@ -144,10 +136,11 @@ public class MaxFlowOptimizer<T,U> implements Runnable {
         }
 
         //translate
-        for (Pipe p : pipes) {
+        for (Pipe<T, U> p : pipes) {
             int pipeSourceIndex = sourceMap.get(p.getSource());
             int pipeSinkIndex = sinkMap.get(p.getSink());
-            p.setFlow(flow[pipeSourceIndex][pipeSinkIndex]);
+            int pipeFlow = flow[pipeSourceIndex][pipeSinkIndex];
+            p.setFlow(pipeFlow);
         }
     }
 }

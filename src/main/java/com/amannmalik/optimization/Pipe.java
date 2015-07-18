@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.amannmalik.optimization;
 
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
-/**
- *
- * @author amann.malik
- */
 public class Pipe<T,U> {
 
     private final Source source;
@@ -27,11 +18,11 @@ public class Pipe<T,U> {
         sink.getInputs().add(this);
     }
 
-    public Source getSource() {
+    public Source<T, U> getSource() {
         return source;
     }
 
-    public Sink getSink() {
+    public Sink<T, U> getSink() {
         return sink;
     }
 
@@ -64,33 +55,21 @@ public class Pipe<T,U> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Pipe<?, ?> pipe = (Pipe<?, ?>) o;
+
+        if (!source.equals(pipe.source)) return false;
+        return sink.equals(pipe.sink);
+
+    }
+
+    @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.source);
-        hash = 83 * hash + Objects.hashCode(this.sink);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Pipe other = (Pipe) obj;
-        if (!Objects.equals(this.source, other.source)) {
-            return false;
-        }
-        if (!Objects.equals(this.sink, other.sink)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Pipe{" + "source=" + source.getAvailable() + ", sink=" + sink.getId() + ", flow=" + flow + '}';
+        int result = source.hashCode();
+        result = 31 * result + sink.hashCode();
+        return result;
     }
 }
