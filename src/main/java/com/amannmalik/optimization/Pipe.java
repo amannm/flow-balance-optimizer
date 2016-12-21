@@ -3,7 +3,7 @@ package com.amannmalik.optimization;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Pipe<T, U> {
+class Pipe<T, U> {
 
     private final Source<T, U> source;
     private final Sink<T, U> sink;

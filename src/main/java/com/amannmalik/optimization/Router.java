@@ -8,7 +8,7 @@ import java.util.function.BiPredicate;
 
 import static java.util.stream.Collectors.toMap;
 
-public class Router<T, U> {
+class Router<T, U> {
 
     private Set<Source<T, U>> sources;
     private Set<Sink<T, U>> sinks;
@@ -41,7 +41,7 @@ public class Router<T, U> {
             if (!sourceMap.containsKey(destinationSinks)) {
                 Set<T> sourceSet = new HashSet<>(1);
                 sourceSet.add(p);
-                Source<T, U> newSource = new Source<T, U>(sourceSet);
+                Source<T, U> newSource = new Source<>(sourceSet);
                 sources.add(newSource);
                 sourceMap.put(destinationSinks, newSource);
             } else {

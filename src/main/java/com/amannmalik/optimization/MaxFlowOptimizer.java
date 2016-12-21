@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MaxFlowOptimizer<T, U> implements Runnable {
+class MaxFlowOptimizer<T, U> implements Runnable {
 
     private final int numNodes;
     private final int[][] capacity;

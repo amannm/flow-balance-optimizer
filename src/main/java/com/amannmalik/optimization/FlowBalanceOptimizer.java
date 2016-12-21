@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class FlowBalanceOptimizer<T, U> implements Runnable {
+class FlowBalanceOptimizer<T, U> implements Runnable {
 
     private Set<Source<T, U>> sources;
 

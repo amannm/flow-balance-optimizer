@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Bar {
 
-    public int initialHeight;
+    private int initialHeight;
     public int currentHeight;
     public int maxHeight;
 
