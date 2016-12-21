@@ -23,7 +23,7 @@ public class FlowBalanceOptimizer<T, U> implements Runnable {
         while (!sources.isEmpty()) {
             sources.forEach(this::balance);
 
-            //this might be inefficient. sources represents the set of sources that need to be processed
+            //TODO: this might be inefficient. sources represents the set of sources that need to be processed
             sources = pipeFlow.entrySet().stream()
                     .filter(e -> e.getKey().getFlow() != e.getValue())
                     .peek(e -> e.setValue(e.getKey().getFlow()))

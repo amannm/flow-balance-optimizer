@@ -2,7 +2,7 @@ group "com.amannmalik"
 version "1.0-SNAPSHOT"
 
 wrapper {
-    gradleVersion = "2.5"
+    gradleVersion = "3.2.1"
 }
 
 apply plugin: "java"
