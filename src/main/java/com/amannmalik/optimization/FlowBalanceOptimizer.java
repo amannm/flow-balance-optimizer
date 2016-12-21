@@ -1,4 +1,4 @@
-package com.amannmalik.optimization.algorithm;
+package com.amannmalik.optimization;
 
 
 import java.util.Map;

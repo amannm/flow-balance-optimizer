@@ -1,8 +1,6 @@
 package com.amannmalik.optimization;
 
 import com.amannmalik.optimization.algorithm.Pipe;
-import com.amannmalik.optimization.algorithm.Sink;
-import com.amannmalik.optimization.algorithm.Source;
 
 import java.util.HashSet;
 import java.util.Set;

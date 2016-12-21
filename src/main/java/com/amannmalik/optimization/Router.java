@@ -1,7 +1,5 @@
 package com.amannmalik.optimization;
 
-import com.amannmalik.optimization.algorithm.*;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -81,7 +79,7 @@ class Router<T, U> {
         //execute the transfer of data from source to sink based on the computed flow amounts on each pipe
         pipes.forEach(Pipe::transferFlow);
 
-        //gather the routing results by sink
+        //gather the routing results by sink and export results cleanly
         return sinks.stream().collect(toMap(Sink::getId, Sink::getItems));
     }
 }
