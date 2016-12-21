@@ -1,4 +1,5 @@
-package com.amannmalik.optimization;
+package com.amannmalik.optimization.algorithm;
+
 
 import java.util.Map;
 import java.util.Set;

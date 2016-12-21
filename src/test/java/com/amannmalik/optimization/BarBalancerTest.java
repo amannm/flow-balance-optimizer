@@ -1,5 +1,7 @@
 package com.amannmalik.optimization;
 
+import com.amannmalik.optimization.algorithm.Bar;
+import com.amannmalik.optimization.algorithm.BarBalancer;
 import org.junit.Test;
 
 import java.util.ArrayList;

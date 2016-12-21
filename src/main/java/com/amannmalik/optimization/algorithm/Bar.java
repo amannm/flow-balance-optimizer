@@ -1,4 +1,6 @@
-package com.amannmalik.optimization;
+package com.amannmalik.optimization.algorithm;
+
+import com.amannmalik.optimization.Pipe;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

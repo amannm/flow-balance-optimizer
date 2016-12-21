@@ -1,4 +1,4 @@
-package com.amannmalik.optimization;
+package com.amannmalik.optimization.algorithm;
 
 import java.util.ArrayList;
 import java.util.Collection;

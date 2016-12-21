@@ -1,4 +1,4 @@
-package com.amannmalik.optimization;
+package com.amannmalik.optimization.algorithm;
 
 import java.util.HashSet;
 import java.util.Set;

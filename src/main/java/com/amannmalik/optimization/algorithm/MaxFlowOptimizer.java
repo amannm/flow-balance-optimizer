@@ -1,4 +1,4 @@
-package com.amannmalik.optimization;
+package com.amannmalik.optimization.algorithm;
 
 import java.util.HashMap;
 import java.util.Map;
