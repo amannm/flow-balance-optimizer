@@ -13,9 +13,9 @@ import static java.util.stream.Collectors.toMap;
  */
 public class FlowNetwork<T, U> {
 
-    private Set<Source<T, U>> sources = new HashSet<>();
-    private Set<Sink<T, U>> sinks = new HashSet<>();
-    private Set<Pipe<T, U>> pipes = new HashSet<>();
+    private final Set<Source<T, U>> sources = new HashSet<>();
+    private final Set<Sink<T, U>> sinks = new HashSet<>();
+    private final Set<Pipe<T, U>> pipes = new HashSet<>();
 
 
     public void FlowNetwork(Set<T> inputSource, BiPredicate<T, U> routeFilter) {
