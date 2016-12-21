@@ -17,12 +17,6 @@ public class Bar {
         this.maxHeight = maxHeight;
     }
 
-    public Bar(Pipe src) {
-        this.initialHeight = src.getSinkInitial() + src.getSinkFlow();
-        this.currentHeight = this.initialHeight;
-        this.maxHeight = src.getSinkTarget();
-    }
-
     public int getAllocation() {
         return this.currentHeight - this.initialHeight;
     }

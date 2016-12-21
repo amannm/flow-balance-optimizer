@@ -1,6 +1,7 @@
 package com.amannmalik.optimization;
 
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -43,7 +44,13 @@ class FlowBalanceOptimizer<T, U> implements Runnable {
             int totalOutput = outputs.stream().mapToInt(Pipe::getAndClearFlow).sum();
 
             //create proxy objects for each pipe from this source
-            Map<Bar, Pipe<T, U>> bars = outputs.stream().collect(Collectors.toMap(Bar::new, Function.identity()));
+            Map<Bar, Pipe<T, U>> bars = new HashMap<>();
+            for (Pipe<T, U> pipe : outputs) {
+                int initialHeight = pipe.getSinkInitial() + pipe.getSinkFlow();
+                int maxHeight = pipe.getSinkTarget();
+                Bar bar = new Bar(initialHeight, maxHeight);
+                bars.put(bar, pipe);
+            }
 
             //compute balanced values
             BarBalancer barBalancer = new BarBalancer(bars.keySet(), totalOutput);
