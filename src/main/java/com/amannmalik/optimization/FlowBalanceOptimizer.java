@@ -10,8 +10,8 @@ class FlowBalanceOptimizer<T, U> implements Runnable {
 
     private Set<Source<T, U>> sources;
 
-    public FlowBalanceOptimizer(Set<Source<T, U>> sources) {
-        this.sources = sources;
+    public FlowBalanceOptimizer(FlowNetwork<T, U> network) {
+        this.sources = network.getSources();
     }
 
     @Override
