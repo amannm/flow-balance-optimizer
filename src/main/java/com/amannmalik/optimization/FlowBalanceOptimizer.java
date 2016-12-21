@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
+//TODO: needs to be looked at differently, double checked for non-converging states
+
 class FlowBalanceOptimizer<T, U> implements Runnable {
 
     private Set<Source<T, U>> sources;
