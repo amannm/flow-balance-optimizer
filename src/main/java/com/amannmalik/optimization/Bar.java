@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by Amann Malik (amannmalik@gmail.com) on 7/17/2015.
  */
-public class Bar {
+class Bar {
 
     private int initialHeight;
     public int currentHeight;
