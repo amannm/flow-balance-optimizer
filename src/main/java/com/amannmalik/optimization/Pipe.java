@@ -3,7 +3,7 @@ package com.amannmalik.optimization;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Pipe<T, U> {
+class Pipe<T, U> {
 
     private final Source<T, U> source;
     private final Sink<T, U> sink;
@@ -13,7 +13,7 @@ public class Pipe<T, U> {
         this.source = source;
         this.sink = sink;
         this.flow = 0;
-        //this is bad
+        //TODO: this is bad
         source.getOutputs().add(this);
         sink.getInputs().add(this);
     }
@@ -47,7 +47,7 @@ public class Pipe<T, U> {
     }
 
     public void transferFlow() {
-        //this is weird
+        //TODO: this is weird
         Set<T> sinkContainer = sink.getItems();
         Iterator<T> iter = source.getItems().iterator();
         while (flow-- > 0) {

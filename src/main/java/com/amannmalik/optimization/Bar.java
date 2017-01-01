@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Bar {
 
-    public int initialHeight;
+    private int initialHeight;
     public int currentHeight;
     public int maxHeight;
 
@@ -15,12 +15,6 @@ public class Bar {
         this.initialHeight = initialHeight;
         this.currentHeight = initialHeight;
         this.maxHeight = maxHeight;
-    }
-
-    public Bar(Pipe src) {
-        this.initialHeight = src.getSinkInitial() + src.getSinkFlow();
-        this.currentHeight = this.initialHeight;
-        this.maxHeight = src.getSinkTarget();
     }
 
     public int getAllocation() {

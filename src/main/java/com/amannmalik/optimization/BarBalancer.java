@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BarBalancer implements Runnable {
 
     private final List<Bar> range;
+
+    //TODO: remember what my thread safe aspirations were exactly...
     private final AtomicInteger available;
 
     public BarBalancer(Collection<Bar> bars, int avail) {

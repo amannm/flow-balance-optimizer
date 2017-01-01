@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MaxFlowOptimizer<T, U> implements Runnable {
+class MaxFlowOptimizer<T, U> implements Runnable {
 
     private final int numNodes;
     private final int[][] capacity;
@@ -20,9 +20,9 @@ public class MaxFlowOptimizer<T, U> implements Runnable {
     private final Map<Source<T, U>, Integer> sourceMap;
     private final Map<Sink<T, U>, Integer> sinkMap;
 
-    public MaxFlowOptimizer(Set<Source<T, U>> sources, Set<Pipe<T, U>> pipes, Set<Sink<T, U>> sinks) {
+    public MaxFlowOptimizer(FlowNetwork<T, U> network) {
 
-        this.numNodes = sources.size() + sinks.size() + 2;
+        this.numNodes = network.getSources().size() + network.getSinks().size() + 2;
 
         this.capacity = new int[numNodes][];
         for (int i = 0; i < numNodes; i++) {
@@ -37,26 +37,26 @@ public class MaxFlowOptimizer<T, U> implements Runnable {
         AtomicInteger nextId = new AtomicInteger(2);
 
         sourceMap = new HashMap<>();
-        for (Source<T, U> s : sources) {
+        for (Source<T, U> s : network.getSources()) {
             int id = nextId.getAndIncrement();
             sourceMap.put(s, id);
             this.capacity[0][id] = s.getAvailable();
         }
 
         sinkMap = new HashMap<>();
-        for (Sink<T, U> s : sinks) {
+        for (Sink<T, U> s : network.getSinks()) {
             int id = nextId.getAndIncrement();
             sinkMap.put(s, id);
             this.capacity[id][1] = Math.max(s.getTarget() - s.getInitial(), 0);
         }
 
-        for (Pipe<T, U> p : pipes) {
+        for (Pipe<T, U> p : network.getPipes()) {
             int pipeSourceIndex = sourceMap.get(p.getSource());
             int pipeSinkIndex = sinkMap.get(p.getSink());
             this.capacity[pipeSourceIndex][pipeSinkIndex] = Integer.MAX_VALUE;
         }
 
-        this.pipes = pipes;
+        this.pipes = network.getPipes();
 
         this.sourceIndex = 0;
         this.sinkIndex = 1;

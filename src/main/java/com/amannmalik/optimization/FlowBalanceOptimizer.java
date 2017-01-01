@@ -1,16 +1,21 @@
 package com.amannmalik.optimization;
 
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class FlowBalanceOptimizer<T, U> implements Runnable {
+
+//TODO: needs to be looked at differently, double checked for non-converging states
+
+class FlowBalanceOptimizer<T, U> implements Runnable {
 
     private Set<Source<T, U>> sources;
 
-    public FlowBalanceOptimizer(Set<Source<T, U>> sources) {
-        this.sources = sources;
+    public FlowBalanceOptimizer(FlowNetwork<T, U> network) {
+        this.sources = network.getSources();
     }
 
     @Override
@@ -23,7 +28,7 @@ public class FlowBalanceOptimizer<T, U> implements Runnable {
         while (!sources.isEmpty()) {
             sources.forEach(this::balance);
 
-            //this might be inefficient. sources represents the set of sources that need to be processed
+            //TODO: this might be inefficient. sources represents the set of sources that need to be processed
             sources = pipeFlow.entrySet().stream()
                     .filter(e -> e.getKey().getFlow() != e.getValue())
                     .peek(e -> e.setValue(e.getKey().getFlow()))
@@ -42,7 +47,13 @@ public class FlowBalanceOptimizer<T, U> implements Runnable {
             int totalOutput = outputs.stream().mapToInt(Pipe::getAndClearFlow).sum();
 
             //create proxy objects for each pipe from this source
-            Map<Bar, Pipe<T, U>> bars = outputs.stream().collect(Collectors.toMap(Bar::new, Function.identity()));
+            Map<Bar, Pipe<T, U>> bars = new HashMap<>();
+            for (Pipe<T, U> pipe : outputs) {
+                int initialHeight = pipe.getSinkInitial() + pipe.getSinkFlow();
+                int maxHeight = pipe.getSinkTarget();
+                Bar bar = new Bar(initialHeight, maxHeight);
+                bars.put(bar, pipe);
+            }
 
             //compute balanced values
             BarBalancer barBalancer = new BarBalancer(bars.keySet(), totalOutput);
