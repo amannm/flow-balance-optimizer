@@ -3,7 +3,7 @@ package com.amannmalik.optimization;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Source<T, U> {
+class Source<T, U> {
 
     private final Set<T> items;
     private final Set<Pipe<T, U>> outputs;

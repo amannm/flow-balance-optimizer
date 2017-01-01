@@ -3,7 +3,7 @@ package com.amannmalik.optimization;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Sink<T, U> {
+class Sink<T, U> {
 
     private final U id;
     private final Set<T> items;

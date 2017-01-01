@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by amannmalik on 12/21/16.
- *
+ * <p>
  * TODO: separate out construction pattern from this state object
  */
 public class FlowNetwork<T, U> {

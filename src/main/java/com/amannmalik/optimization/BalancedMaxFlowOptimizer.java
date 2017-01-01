@@ -4,7 +4,7 @@ package com.amannmalik.optimization;
 /**
  * Created by amannmalik on 12/21/16.
  */
-public class BalancedMaxFlowOptimizer<T, U> implements Runnable {
+class BalancedMaxFlowOptimizer<T, U> implements Runnable {
 
     private final FlowNetwork<T, U> network;
 
