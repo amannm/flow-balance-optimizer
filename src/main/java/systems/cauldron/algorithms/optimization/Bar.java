@@ -1,4 +1,4 @@
-package com.amannmalik.optimization;
+package systems.cauldron.algorithms.optimization;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class Bar {
 
-    private int initialHeight;
+    private final int initialHeight;
     public int currentHeight;
     public int maxHeight;
 

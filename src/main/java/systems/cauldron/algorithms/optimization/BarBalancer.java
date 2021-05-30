@@ -1,7 +1,8 @@
-package com.amannmalik.optimization;
+package systems.cauldron.algorithms.optimization;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +19,7 @@ class BarBalancer implements Runnable {
 
     public BarBalancer(Collection<Bar> bars, int avail) {
         range = new ArrayList<>(bars);
-        range.sort((a, b) -> Integer.compare(a.currentHeight, b.currentHeight));
+        range.sort(Comparator.comparingInt(a -> a.currentHeight));
         available = new AtomicInteger(avail);
     }
 
@@ -126,7 +127,7 @@ class BarBalancer implements Runnable {
 
     private void topOff() {
         while (available.get() > 0 && !range.isEmpty()) {
-            range.sort((a, b) -> Integer.compare(a.currentHeight, b.currentHeight));
+            range.sort(Comparator.comparingInt(a -> a.currentHeight));
             Bar curb = range.get(0);
             if (curb.currentHeight == curb.maxHeight) {
                 range.remove(0);

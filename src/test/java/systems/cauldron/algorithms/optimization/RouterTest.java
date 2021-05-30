@@ -1,8 +1,7 @@
-package com.amannmalik.optimization;
+package systems.cauldron.algorithms.optimization;
 
-import org.junit.Test;
 
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by amannmalik on 12/21/16.

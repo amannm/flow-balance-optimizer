@@ -1,4 +1,4 @@
-package com.amannmalik.optimization;
+package systems.cauldron.algorithms.optimization;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
-package com.amannmalik.optimization;
+package systems.cauldron.algorithms.optimization;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
