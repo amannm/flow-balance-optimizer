@@ -1,4 +1,4 @@
-package systems.cauldron.algorithms.optimization.balancing;
+package systems.cauldron.algorithms.optimization.optimizer.balancing;
 
 import java.util.ArrayList;
 import java.util.Collection;

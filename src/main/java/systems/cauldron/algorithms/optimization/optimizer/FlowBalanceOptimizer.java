@@ -1,12 +1,12 @@
 package systems.cauldron.algorithms.optimization.optimizer;
 
 
-import systems.cauldron.algorithms.optimization.balancing.Bar;
-import systems.cauldron.algorithms.optimization.balancing.BarBalancer;
 import systems.cauldron.algorithms.optimization.network.FlowNetwork;
 import systems.cauldron.algorithms.optimization.network.Pipe;
 import systems.cauldron.algorithms.optimization.network.Sink;
 import systems.cauldron.algorithms.optimization.network.Source;
+import systems.cauldron.algorithms.optimization.optimizer.balancing.Bar;
+import systems.cauldron.algorithms.optimization.optimizer.balancing.BarBalancer;
 
 import java.util.HashMap;
 import java.util.Map;

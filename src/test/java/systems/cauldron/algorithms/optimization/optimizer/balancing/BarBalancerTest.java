@@ -1,4 +1,4 @@
-package systems.cauldron.algorithms.optimization.balancing;
+package systems.cauldron.algorithms.optimization.optimizer.balancing;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
