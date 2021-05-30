@@ -17,8 +17,8 @@ import static java.util.stream.Collectors.toMap;
 public class FlowNetwork<T, U> {
 
     private final Set<Source<T, U>> sources;
-    private final Set<Sink<T, U>> sinks;
     private final Set<Pipe<T, U>> pipes;
+    private final Set<Sink<T, U>> sinks;
 
     public Map<U, Set<T>> getSinkContents() {
         return sinks.stream()

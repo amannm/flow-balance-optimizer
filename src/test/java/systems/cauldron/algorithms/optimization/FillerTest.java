@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class FillerTest {
 
-    private static final Logger LOG = LogManager.getLogger(FillerTest.class);
+    private static final Logger LOG = LogManager.getLogger(FillerTest.class.getSimpleName());
 
     @Test
     public void basicTest() {

@@ -19,8 +19,10 @@ public class Filler {
     public static <T, U> Map<U, Set<T>> assign(Set<T> inputSource, BiPredicate<T, U> routeFilter, Collection<Fillable<U>> inputSinks) {
 
         Set<Source<T, U>> networkSources = new HashSet<>();
-        Set<Sink<T, U>> networkSinks = inputSinks.stream().map(Sink<T, U>::new).collect(Collectors.toSet());
         Set<Pipe<T, U>> networkPipes = new HashSet<>();
+        Set<Sink<T, U>> networkSinks = inputSinks.stream()
+                .map(Sink<T, U>::new)
+                .collect(Collectors.toSet());
 
         Map<Set<Sink<T, U>>, Source<T, U>> sinksToSourceMap = new HashMap<>();
         for (T inputItem : inputSource) {
@@ -42,7 +44,7 @@ public class Filler {
             networkSources.add(source);
         }
 
-        FlowNetwork<T, U> network = new FlowNetwork<>(networkSources, networkSinks, networkPipes);
+        FlowNetwork<T, U> network = new FlowNetwork<>(networkSources, networkPipes, networkSinks);
 
         BalancedMaxFlowOptimizer<T, U> optimizer = new BalancedMaxFlowOptimizer<>(network);
         optimizer.run();

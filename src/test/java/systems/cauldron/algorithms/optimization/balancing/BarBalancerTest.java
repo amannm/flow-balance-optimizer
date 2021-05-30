@@ -24,51 +24,51 @@ public class BarBalancerTest {
     public void balance_random_bars_nothing() {
         int available = 0;
         List<Bar> randomBars = createRandomBars(20);
-        List<Bar> barsSnapshot = snapshotBars(randomBars);
+        List<Bar> originalBars = snapshotBars(randomBars);
         BarBalancer balancer = new BarBalancer(randomBars, available);
         balancer.run();
-        printBar(barsSnapshot, "Before balancing with none available");
-        printBar(randomBars, "After balancing with none available");
-        int added = getDiffSum(barsSnapshot, randomBars);
+        printBars(originalBars, "Before balancing with none available");
+        printBars(randomBars, "After balancing with none available");
+        int added = getTotalAdded(originalBars, randomBars);
         assertEquals(0, added);
-        List<Bar> changedBarsNotAtCapacity = getChangedBarsNotAtCapacity(barsSnapshot, randomBars);
+        List<Bar> changedBarsNotAtCapacity = getChangedBarsNotAtCapacity(originalBars, randomBars);
         assertTrue(changedBarsNotAtCapacity.isEmpty());
     }
 
     @Test
     public void balance_random_bars_deficit() {
-        int available = 200;
+        int available = 100;
         List<Bar> randomBars = createRandomBars(20);
-        List<Bar> barsSnapshot = snapshotBars(randomBars);
+        List<Bar> originalBars = snapshotBars(randomBars);
         BarBalancer balancer = new BarBalancer(randomBars, available);
         balancer.run();
-        printBar(barsSnapshot, "Before balancing with a deficit available");
-        printBar(randomBars, "After balancing with a deficit available");
-        int added = getDiffSum(barsSnapshot, randomBars);
+        printBars(originalBars, "Before balancing with a deficit available");
+        printBars(randomBars, "After balancing with a deficit available");
+        int added = getTotalAdded(originalBars, randomBars);
         assertEquals(added, available);
-        List<Bar> changedBarsNotAtCapacity = getChangedBarsNotAtCapacity(barsSnapshot, randomBars);
+        List<Bar> changedBarsNotAtCapacity = getChangedBarsNotAtCapacity(originalBars, randomBars);
         int expectedValue = changedBarsNotAtCapacity.stream().mapToInt(bar -> bar.currentHeight).min().orElseThrow();
-        assertTrue(changedBarsNotAtCapacity.stream().allMatch(bar -> bar.currentHeight == expectedValue || bar.currentHeight == expectedValue + 1));
+        assertTrue(changedBarsNotAtCapacity.stream().allMatch(bar -> bar.currentHeight - expectedValue <= 1));
     }
 
     @Test
     public void balance_random_bars_surplus() {
         int available = 10000;
         List<Bar> randomBars = createRandomBars(20);
-        List<Bar> barsSnapshot = snapshotBars(randomBars);
+        List<Bar> originalBars = snapshotBars(randomBars);
         BarBalancer balancer = new BarBalancer(randomBars, available);
         balancer.run();
-        printBar(barsSnapshot, "Before balancing with a surplus available");
-        printBar(randomBars, "After balancing with a surplus available");
-        int added = getDiffSum(barsSnapshot, randomBars);
+        printBars(originalBars, "Before balancing with a surplus available");
+        printBars(randomBars, "After balancing with a surplus available");
+        int added = getTotalAdded(originalBars, randomBars);
         assertTrue(added < available);
-        List<Bar> changedBarsNotAtCapacity = getChangedBarsNotAtCapacity(barsSnapshot, randomBars);
+        List<Bar> changedBarsNotAtCapacity = getChangedBarsNotAtCapacity(originalBars, randomBars);
         assertTrue(changedBarsNotAtCapacity.isEmpty());
     }
 
-    public static List<Bar> createRandomBars(int size) {
+    public static List<Bar> createRandomBars(int count) {
         List<Bar> result = new ArrayList<>();
-        while (size-- > 0) {
+        while (count-- > 0) {
             Random random = new Random();
             int initialHeight = random.nextInt(50);
             int maxHeight = initialHeight + random.nextInt(50);
@@ -79,7 +79,9 @@ public class BarBalancerTest {
     }
 
     public static List<Bar> snapshotBars(List<Bar> bars) {
-        return bars.stream().map(bar -> new Bar(bar.currentHeight, bar.maxHeight)).collect(Collectors.toList());
+        return bars.stream()
+                .map(bar -> new Bar(bar.currentHeight, bar.maxHeight))
+                .collect(Collectors.toList());
     }
 
     public List<Bar> getChangedBarsNotAtCapacity(List<Bar> previous, List<Bar> next) {
@@ -97,18 +99,18 @@ public class BarBalancerTest {
         return results;
     }
 
-    public static int getDiffSum(List<Bar> previous, List<Bar> next) {
+    public static int getTotalAdded(List<Bar> previous, List<Bar> next) {
         int previousSum = previous.stream().mapToInt(bar -> bar.currentHeight).sum();
         int nextSum = next.stream().mapToInt(bar -> bar.currentHeight).sum();
         return nextSum - previousSum;
     }
 
-    public static void printBar(List<Bar> range, String message) {
-        LOG.info("*** " + message);
-        for (Bar b : range) {
-            StringBuilder sb = new StringBuilder(String.format("\t%3d/%3d\t", b.currentHeight, b.maxHeight));
-            for (int i = 0; i < b.maxHeight; i++) {
-                if (i == b.currentHeight - 1) {
+    public static void printBars(List<Bar> bars, String header) {
+        LOG.info("*** " + header);
+        for (Bar bar : bars) {
+            StringBuilder sb = new StringBuilder(String.format("\t%3d/%3d\t", bar.currentHeight, bar.maxHeight));
+            for (int i = 0; i < bar.maxHeight; i++) {
+                if (i == bar.currentHeight - 1) {
                     sb.append('|');
                 } else {
                     sb.append('-');
