@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
-import systems.cauldron.algorithms.optimization.filler.Fillable;
-import systems.cauldron.algorithms.optimization.filler.Filler;
+import systems.cauldron.algorithms.optimization.allocation.Allocatable;
+import systems.cauldron.algorithms.optimization.allocation.AllocationPlanner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Created by amannmalik on 12/21/16.
  */
-public class FillerTest {
+public class AllocationPlannerTest {
 
-    private static final Logger LOG = LogManager.getLogger(FillerTest.class.getSimpleName());
+    private static final Logger LOG = LogManager.getLogger(AllocationPlannerTest.class.getSimpleName());
 
     @Test
     public void basicTest() {
@@ -38,34 +38,34 @@ public class FillerTest {
         IntStream.range(0, 3).forEach(i -> rations.add(new Ration(UUID.randomUUID(), Ration.Type.CHEESE_PIZZA)));
         IntStream.range(0, 3).forEach(i -> rations.add(new Ration(UUID.randomUUID(), Ration.Type.SPAGHETTI)));
 
-        List<Fillable<Person>> people = List.of(
-                new FillablePerson(new Person("Frank", Person.DietaryRestriction.NONE), 4, 10),
-                new FillablePerson(new Person("Pete", Person.DietaryRestriction.VEGAN), 2, 6),
-                new FillablePerson(new Person("Susan", Person.DietaryRestriction.VEGETARIAN), 6, 8),
-                new FillablePerson(new Person("Cheryl", Person.DietaryRestriction.NONE), 0, 15)
+        List<Allocatable<Person>> people = List.of(
+                new AllocatablePerson(new Person("Frank", Person.DietaryRestriction.NONE), 4, 10),
+                new AllocatablePerson(new Person("Pete", Person.DietaryRestriction.VEGAN), 2, 6),
+                new AllocatablePerson(new Person("Susan", Person.DietaryRestriction.VEGETARIAN), 6, 8),
+                new AllocatablePerson(new Person("Cheryl", Person.DietaryRestriction.NONE), 0, 15)
         );
 
-        Map<Person, Set<Ration>> result = Filler.assign(new HashSet<>(rations), FillerTest::isAllowed, people);
+        Map<Person, Set<Ration>> result = AllocationPlanner.getPlan(new HashSet<>(rations), AllocationPlannerTest::isAllowed, people);
 
-        people.forEach(fillablePerson -> {
-            Person person = fillablePerson.getItem();
+        people.forEach(allocatablePerson -> {
+            Person person = allocatablePerson.getTarget();
             Set<Ration> assignedRations = result.get(person);
-            LOG.info("{} has restriction {}, started with {} rations, has capacity {}", person.getName(), person.getDietaryRestriction(), fillablePerson.getCurrentCount(), fillablePerson.getMaximumCount());
+            LOG.info("{} has restriction {}, started with {} rations, has capacity {}", person.getName(), person.getDietaryRestriction(), allocatablePerson.getCurrentCount(), allocatablePerson.getMaximumCount());
             TreeMap<Ration.Type, Long> assignedRationsByType = assignedRations.stream()
                     .collect(Collectors.groupingBy(Ration::getType, TreeMap::new, Collectors.counting()));
             assignedRationsByType.forEach((type, amount) -> {
                 LOG.info("\twas assigned {} {} rations", amount, type);
             });
             int addedCount = assignedRations.size();
-            LOG.info("\t\tnow has {} rations", fillablePerson.getCurrentCount() + addedCount);
+            LOG.info("\t\tnow has {} rations", allocatablePerson.getCurrentCount() + addedCount);
         });
 
         result.forEach((person, assignedRations) -> assertTrue(assignedRations.stream().allMatch(ration -> isAllowed(ration, person))));
 
-        List<Integer> totals = people.stream().map(fillablePerson -> {
-            Person person = fillablePerson.getItem();
+        List<Integer> totals = people.stream().map(allocatablePerson -> {
+            Person person = allocatablePerson.getTarget();
             Set<Ration> assignedRations = result.get(person);
-            return fillablePerson.getCurrentCount() + assignedRations.size();
+            return allocatablePerson.getCurrentCount() + assignedRations.size();
         }).collect(Collectors.toList());
         assertFalse(totals.isEmpty());
 
@@ -147,14 +147,14 @@ public class FillerTest {
     }
 
     @RequiredArgsConstructor
-    public static class FillablePerson implements Fillable<Person> {
+    public static class AllocatablePerson implements Allocatable<Person> {
 
         private final Person person;
         private final int currentRationCount;
         private final int maxRationCount;
 
         @Override
-        public Person getItem() {
+        public Person getTarget() {
             return person;
         }
 

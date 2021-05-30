@@ -1,4 +1,4 @@
-package systems.cauldron.algorithms.optimization.filler;
+package systems.cauldron.algorithms.optimization.allocation;
 
 import systems.cauldron.algorithms.optimization.network.FlowNetwork;
 import systems.cauldron.algorithms.optimization.network.Pipe;
@@ -14,9 +14,9 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
-public class Filler {
+public class AllocationPlanner {
 
-    public static <T, U> Map<U, Set<T>> assign(Set<T> inputSource, BiPredicate<T, U> routeFilter, Collection<Fillable<U>> inputSinks) {
+    public static <T, U> Map<U, Set<T>> getPlan(Set<T> inputSource, BiPredicate<T, U> routeFilter, Collection<Allocatable<U>> inputSinks) {
 
         Set<Source<T, U>> networkSources = new HashSet<>();
         Set<Pipe<T, U>> networkPipes = new HashSet<>();
