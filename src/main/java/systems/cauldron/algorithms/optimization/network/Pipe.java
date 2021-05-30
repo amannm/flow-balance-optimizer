@@ -1,9 +1,9 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.network;
 
 import java.util.Iterator;
 import java.util.Set;
 
-class Pipe<T, U> {
+public class Pipe<T, U> {
 
     private final Source<T, U> source;
     private final Sink<T, U> sink;
@@ -26,18 +26,6 @@ class Pipe<T, U> {
         return sink;
     }
 
-    public int getSinkFlow() {
-        return sink.getFlow();
-    }
-
-    public int getSinkInitial() {
-        return sink.getInitial();
-    }
-
-    public int getSinkTarget() {
-        return sink.getTarget();
-    }
-
     public void setFlow(int amount) {
         flow = amount;
     }
@@ -46,7 +34,7 @@ class Pipe<T, U> {
         return flow;
     }
 
-    public void transferFlow() {
+    void transferFlow() {
         //TODO: this is weird
         Set<T> sinkContainer = sink.getItems();
         Iterator<T> iter = source.getItems().iterator();
@@ -66,11 +54,8 @@ class Pipe<T, U> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Pipe<?, ?> pipe = (Pipe<?, ?>) o;
-
         return source.equals(pipe.source) && sink.equals(pipe.sink);
-
     }
 
     @Override

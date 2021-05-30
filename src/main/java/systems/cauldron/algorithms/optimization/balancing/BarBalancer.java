@@ -1,4 +1,4 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.balancing;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by Amann Malik (amannmalik@gmail.com) on 7/17/2015.
  */
-class BarBalancer implements Runnable {
+public class BarBalancer implements Runnable {
 
     private final List<Bar> range;
 
@@ -137,6 +137,4 @@ class BarBalancer implements Runnable {
             }
         }
     }
-
-
 }

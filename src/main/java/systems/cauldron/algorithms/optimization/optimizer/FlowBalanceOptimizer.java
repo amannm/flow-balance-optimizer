@@ -1,5 +1,12 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.optimizer;
 
+
+import systems.cauldron.algorithms.optimization.balancing.Bar;
+import systems.cauldron.algorithms.optimization.balancing.BarBalancer;
+import systems.cauldron.algorithms.optimization.network.FlowNetwork;
+import systems.cauldron.algorithms.optimization.network.Pipe;
+import systems.cauldron.algorithms.optimization.network.Sink;
+import systems.cauldron.algorithms.optimization.network.Source;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +16,11 @@ import java.util.stream.Collectors;
 
 
 //TODO: needs to be looked at differently, double checked for non-converging states
-
 class FlowBalanceOptimizer<T, U> implements Runnable {
 
     private Set<Source<T, U>> sources;
 
-    public FlowBalanceOptimizer(FlowNetwork<T, U> network) {
+    FlowBalanceOptimizer(FlowNetwork<T, U> network) {
         this.sources = network.getSources();
     }
 
@@ -39,18 +45,21 @@ class FlowBalanceOptimizer<T, U> implements Runnable {
         }
     }
 
-    private void balance(Source<T, U> s) {
-        Set<Pipe<T, U>> outputs = s.getOutputs();
+    private void balance(Source<T, U> source) {
+        Set<Pipe<T, U>> outputs = source.getOutputs();
         if (!outputs.isEmpty()) {
 
             //remove all flow committed to all pipes from this source
-            int totalOutput = outputs.stream().mapToInt(Pipe::getAndClearFlow).sum();
+            int totalOutput = outputs.stream()
+                    .mapToInt(Pipe::getAndClearFlow)
+                    .sum();
 
             //create proxy objects for each pipe from this source
             Map<Bar, Pipe<T, U>> bars = new HashMap<>();
             for (Pipe<T, U> pipe : outputs) {
-                int initialHeight = pipe.getSinkInitial() + pipe.getSinkFlow();
-                int maxHeight = pipe.getSinkTarget();
+                Sink<T, U> sink = pipe.getSink();
+                int initialHeight = sink.getInitial() + sink.getFlow();
+                int maxHeight = sink.getTarget();
                 Bar bar = new Bar(initialHeight, maxHeight);
                 bars.put(bar, pipe);
             }
@@ -63,10 +72,6 @@ class FlowBalanceOptimizer<T, U> implements Runnable {
             bars.forEach((k, v) -> {
                 v.setFlow(k.getAllocation());
             });
-
         }
-
     }
-
-
 }

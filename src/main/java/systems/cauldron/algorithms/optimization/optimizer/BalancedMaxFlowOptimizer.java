@@ -1,10 +1,12 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.optimizer;
 
+
+import systems.cauldron.algorithms.optimization.network.FlowNetwork;
 
 /**
  * Created by amannmalik on 12/21/16.
  */
-class BalancedMaxFlowOptimizer<T, U> implements Runnable {
+public class BalancedMaxFlowOptimizer<T, U> implements Runnable {
 
     private final FlowNetwork<T, U> network;
 
@@ -12,6 +14,7 @@ class BalancedMaxFlowOptimizer<T, U> implements Runnable {
         this.network = network;
     }
 
+    @Override
     public void run() {
 
         //optimize such that the maximum amount of items are routed to sinks

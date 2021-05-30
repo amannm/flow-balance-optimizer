@@ -1,11 +1,11 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.balancing;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Amann Malik (amannmalik@gmail.com) on 7/17/2015.
  */
-class Bar {
+public class Bar {
 
     private final int initialHeight;
     public int currentHeight;

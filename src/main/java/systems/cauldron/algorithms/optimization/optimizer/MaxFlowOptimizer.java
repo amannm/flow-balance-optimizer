@@ -1,4 +1,9 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.optimizer;
+
+import systems.cauldron.algorithms.optimization.network.FlowNetwork;
+import systems.cauldron.algorithms.optimization.network.Pipe;
+import systems.cauldron.algorithms.optimization.network.Sink;
+import systems.cauldron.algorithms.optimization.network.Source;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +25,7 @@ class MaxFlowOptimizer<T, U> implements Runnable {
     private final Map<Source<T, U>, Integer> sourceMap;
     private final Map<Sink<T, U>, Integer> sinkMap;
 
-    public MaxFlowOptimizer(FlowNetwork<T, U> network) {
+    MaxFlowOptimizer(FlowNetwork<T, U> network) {
 
         this.numNodes = network.getSources().size() + network.getSinks().size() + 2;
 
@@ -136,11 +141,11 @@ class MaxFlowOptimizer<T, U> implements Runnable {
         }
 
         //translate
-        for (Pipe<T, U> p : pipes) {
-            int pipeSourceIndex = sourceMap.get(p.getSource());
-            int pipeSinkIndex = sinkMap.get(p.getSink());
+        for (Pipe<T, U> pipe : pipes) {
+            int pipeSourceIndex = sourceMap.get(pipe.getSource());
+            int pipeSinkIndex = sinkMap.get(pipe.getSink());
             int pipeFlow = flow[pipeSourceIndex][pipeSinkIndex];
-            p.setFlow(pipeFlow);
+            pipe.setFlow(pipeFlow);
         }
     }
 }

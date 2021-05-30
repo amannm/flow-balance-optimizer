@@ -1,3 +1,13 @@
 # flow-balance-optimizer
 
-I read this http://web.stanford.edu/class/ee380/Abstracts/070314-SPMF-EE380.pdf and built a combinatorial optimization solution for a very specific business operations situation involving routing of data references to independent actors in a manner that resembles fluid
+a combinatorial optimization algorithm: max flow followed by "balancing"
+
+* selective provisioning of source items to sinks with respect to initial count and maximum capacity
+* inspired by: http://web.stanford.edu/class/ee380/Abstracts/070314-SPMF-EE380.pdf
+
+# TODO
+
+* more comprehensive/precise tests
+* benchmarking fixtures
+* concurrency optimizations
+* optimizations on bar balancing

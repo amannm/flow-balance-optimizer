@@ -1,15 +1,15 @@
-package systems.cauldron.algorithms.optimization;
+package systems.cauldron.algorithms.optimization.network;
 
 import java.util.HashSet;
 import java.util.Set;
 
-class Source<T, U> {
+public class Source<T, U> {
 
     private final Set<T> items;
     private final Set<Pipe<T, U>> outputs;
 
-    public Source(Set<T> container) {
-        this.items = container;
+    public Source() {
+        this.items = new HashSet<>();
         this.outputs = new HashSet<>();
     }
 
@@ -24,5 +24,4 @@ class Source<T, U> {
     public Set<T> getItems() {
         return items;
     }
-
 }
